@@ -2,8 +2,13 @@ import streamlit as st #https://docs.streamlit.io/
 import pandas as pd #https://pandas.pydata.org/docs/
 import io #https://docs.python.org/3/library/io.html
 
-st.title("CSV to Excel Converter")
-
+st.title("RapidCool Proprietary Penguin Log Converter")
+st.markdown("""
+1. Open nRf connect log
+2. Set parser as 'utf-8'
+3. Set log level to "Application"
+4. Export Log and upload here
+            """)
 uploaded_file = st.file_uploader("Upload your CSV", type="csv") #UI for upload button
 
 if uploaded_file is not None:
@@ -32,13 +37,14 @@ if uploaded_file is not None:
     df['Temp2'] = df['Temp2'] + 32
     
     df = df.reset_index(drop=True) #reset entries to be properly numbered
+    st.markdown("""Preview""")
     st.dataframe(df)  #table preview
     buffer = io.BytesIO()
     df.to_excel(buffer, index=True, engine='openpyxl') #convert pandas object to excel sheet
     buffer.seek(0) #reset cursor
 
     st.download_button( #UI for download button
-        label="Download as Excel",
+        label="Download Excel Sheet",
         data=buffer,
         file_name="output.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
